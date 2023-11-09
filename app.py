@@ -48,3 +48,6 @@ def answer():
 @app.route("/")
 def index():
     return render_template("index.html", title="")
+
+if __name__ == "__main__":
+    app.run()
