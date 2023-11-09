@@ -29,7 +29,7 @@ function sendMessage() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function() {
         if (xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);
+            let response = JSON.parse(xhr.responseText);
             displayMessage('assistant', response.message);
         }
     };
@@ -78,14 +78,5 @@ function displayMessage(sender, message) {
 }
 
 // Handle button click event
-var sendButton = document.getElementById('send-btn');
+let sendButton = document.getElementById('send-btn');
 sendButton.addEventListener('click', sendMessage);
-
-// Handle Enter key press event
-var messageInput = document.getElementById('message-input');
-messageInput.addEventListener('keypress', function(event) {
-    if (event.key === 13) {
-        event.preventDefault();
-        sendMessage();
-    }
-});
