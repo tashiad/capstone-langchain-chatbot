@@ -23,7 +23,7 @@ You will mostly work with the `app.py` and `index.html` files.
 1. Fork this repository.
 2. Create a Codespace for your project.
 3. GitHub Codespaces will automatically create a fully-configured development environment for your project in the cloud. If you need to install the requirements manually run: `pip install -r requirements.txt`.
-4. To run the app, use the following command: `gunicorn app:app`
+4. To run the app, use the following command: `python app.py`
 5. To run the tests simply use the following command: `pytest tests/*.py`
 
 > **Note:** While it is not mandatory to pass all the unit tests to complete this assignment, it is highly recommended that you use the tests as a guide to deliver a functional application and meet the requirements of the rubric. Feel free to add or update the tests as you work through your project to ensure proper functionality.
