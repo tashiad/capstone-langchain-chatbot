@@ -183,7 +183,7 @@ To improve usability, you can implement additional user-friendly features. Here 
 3. Additional user-friendly features, such as auto-scrolling and clear button, are implemented.
 4. The overall UI enhances the user experience of interacting with the chatbot.
 
-Update the `index.html`, `style.css``, and `main.js` files as needed to implement the improvements to the user interface. Test the chatbot in the browser to verify the changes and ensure a seamless user experience.
+Update the `index.html`, `style.css`, and `main.js` files as needed to implement the improvements to the user interface. Test the chatbot in the browser to verify the changes and ensure a seamless user experience.
 
 ### US-05 Deployment
 
