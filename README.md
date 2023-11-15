@@ -26,6 +26,8 @@ You will mostly work with the `app.py` and `index.html` files.
 4. To run the app, use the following command: `python app.py`
 5. To run the tests simply use the following command: `pytest tests/*.py`
 
+> **Tip:** Review the [Github Codespaces documentation](https://docs.github.com/en/codespaces/getting-started/quickstart) if you are unsure on how to run and test your app from Codespaces.
+
 > **Note:** While it is not mandatory to pass all the unit tests to complete this assignment, it is highly recommended that you use the tests as a guide to deliver a functional application and meet the requirements of the rubric. Feel free to add or update the tests as you work through your project to ensure proper functionality.
 
 ## Product Backlog
