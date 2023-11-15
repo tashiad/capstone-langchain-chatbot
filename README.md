@@ -106,6 +106,8 @@ def load_db():
         return qa
     except Exception as e:
         print("Error:", e)
+
+qa = load_db()
 ```
 
 #### 4. Implement the *answer_from_knowledgebase* function
