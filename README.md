@@ -69,6 +69,8 @@ Your chatbot will include this feature as an option to allow users to ask topic-
 
 Use the [notebook](https://colab.research.google.com/drive/1fGCia6TEjerDlysPqUFsBb8x3LwiG0Ef?usp=sharing) provided in the Generative Question Answering lesson to create a Chroma database and download it to your computer. Make sure that you choose a text that is related to your industry or that it's a text that may bring useful information.
 
+>**Note:** Cohere has introduced a token limit for embeddings, so to prevent errors, it's recommended to use shorter texts, like a Wikipedia article. If you encounter any issues while creating your database using the notebook above, you are welcome to use [this](https://github.com/Thinkful-Ed/ai-in-web-dev-resources/raw/refs/heads/main/db.zip) pre-built database for your project.
+
 >**Note:** Please be aware that Github imposes a [file size limit of 25MB](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-large-files-on-github#file-size-limits). Thus, if you add numerous documents to your database, it may exceed this limit. In case you have a file larger than 25MB, you have two options: 
 >
 >1. You can commit the file locally, thereby raising the limit to 50MB.
