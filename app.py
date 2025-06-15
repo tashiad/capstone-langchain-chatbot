@@ -3,35 +3,64 @@ from langchain.llms import Cohere
 from langchain import PromptTemplate, LLMChain
 import os
 from dotenv import load_dotenv
+from langchain.chains import RetrievalQA
+from langchain.embeddings import CohereEmbeddings
+from langchain.vectorstores import Chroma
 
-load_dotenv()  # Load environment variables from .env
+load_dotenv()
 
 app = Flask(__name__)
 
 def answer_as_chatbot(message):
     template = """Question: {question}
-
 Answer as if you are an expert Python developer"""
-
     prompt = PromptTemplate(template=template, input_variables=["question"])
     llm = Cohere(cohere_api_key=os.environ["COHERE_API_KEY"])
     llm_chain = LLMChain(prompt=prompt, llm=llm)
-    res = llm_chain.run(message)
-    return res 
+    return llm_chain.run(message)
+
+def load_db():
+    try:
+        embeddings = CohereEmbeddings(cohere_api_key=os.environ["COHERE_API_KEY"])
+        vectordb = Chroma(persist_directory='db', embedding_function=embeddings)
+        docs = vectordb.get()
+        if len(docs['documents']) == 0:
+            print("⚠️ Warning: No documents found in the database.")
+        qa = RetrievalQA.from_chain_type(
+            llm=Cohere(cohere_api_key=os.environ["COHERE_API_KEY"]),
+            chain_type="refine",
+            retriever=vectordb.as_retriever(),
+            return_source_documents=True
+        )
+        return qa
+    except Exception as e:
+        print("❌ Failed to load knowledge base:", e)
+        return None
+
+qa = load_db()
 
 @app.route('/answer', methods=['POST'])
 def answer():
-    message = request.json['message']
-    
-    # Generate a response as an expert Python developer
+    message = request.json.get('message', '')
     response_message = answer_as_chatbot(message)
-    
-    # Return the response as JSON
     return jsonify({'message': response_message}), 200
 
-@app.route("/")
-def index():
-    return render_template("index.html", title="")
+@app.route('/kbanswer', methods=['POST'])
+def answer_from_knowledgebase():
+    if not qa:
+        print("❌ Knowledge base not loaded.")
+        return jsonify({'error': 'Knowledge base is not loaded'}), 500
+    try:
+        message = request.json.get('message', '')
+        res = qa({"query": message})
+        return jsonify({'message': res['result']}), 200
+    except Exception as e:
+        print("❌ Error handling knowledge base query:", e)
+        return jsonify({'error': 'Something went wrong with the knowledgebase query.'}), 500
 
-if __name__ == "__main__":
+@app.route('/')
+def index():
+    return render_template('index.html', title='')
+
+if __name__ == '__main__':
     app.run(debug=True)
