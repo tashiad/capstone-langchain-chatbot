@@ -1,45 +1,29 @@
-from flask import Flask, render_template
-from flask import request, jsonify, abort
-
+from flask import Flask, render_template, request, jsonify
 from langchain.llms import Cohere
+from langchain import PromptTemplate, LLMChain
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env
 
 app = Flask(__name__)
 
-def answer_from_knowledgebase(message):
-    # TODO: Write your code here
-    return ""
-
-def search_knowledgebase(message):
-    # TODO: Write your code here
-    sources = ""
-    return sources
-
 def answer_as_chatbot(message):
-    # TODO: Write your code here
-    return ""
+    template = """Question: {question}
 
-@app.route('/kbanswer', methods=['POST'])
-def kbanswer():
-    # TODO: Write your code here
-    
-    # call answer_from_knowledebase(message)
-        
-    # Return the response as JSON
-    return 
+Answer as if you are an expert Python developer"""
 
-@app.route('/search', methods=['POST'])
-def search():    
-    # Search the knowledgebase and generate a response
-    # (call search_knowledgebase())
-    
-    # Return the response as JSON
-    return
+    prompt = PromptTemplate(template=template, input_variables=["question"])
+    llm = Cohere(cohere_api_key=os.environ["COHERE_API_KEY"])
+    llm_chain = LLMChain(prompt=prompt, llm=llm)
+    res = llm_chain.run(message)
+    return res 
 
 @app.route('/answer', methods=['POST'])
 def answer():
     message = request.json['message']
     
-    # Generate a response
+    # Generate a response as an expert Python developer
     response_message = answer_as_chatbot(message)
     
     # Return the response as JSON
@@ -50,4 +34,4 @@ def index():
     return render_template("index.html", title="")
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
