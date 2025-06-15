@@ -39,6 +39,10 @@ def load_db():
 
 qa = load_db()
 
+@app.route('/')
+def index():
+    return render_template('index.html', title='')
+
 @app.route('/answer', methods=['POST'])
 def answer():
     message = request.json.get('message', '')
@@ -58,9 +62,26 @@ def answer_from_knowledgebase():
         print("❌ Error handling knowledge base query:", e)
         return jsonify({'error': 'Something went wrong with the knowledgebase query.'}), 500
 
-@app.route('/')
-def index():
-    return render_template('index.html', title='')
+@app.route('/search', methods=['POST'])
+def search_knowledgebase():
+    if not qa:
+        return jsonify({'error': 'Knowledge base is not loaded'}), 500
+    try:
+        message = request.json.get('message', '')
+        res = qa({"query": message})
+        
+        # Format source documents nicely
+        sources = ""
+        for count, source in enumerate(res['source_documents'], 1):
+            sources += f"Source {count}:\n{source.page_content}\n\n"
+        
+        return jsonify({
+            'message': res['result'],
+            'sources': sources.strip()
+        }), 200
+    except Exception as e:
+        print("Error in /search:", e)
+        return jsonify({'error': 'Something went wrong with the search query.'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
